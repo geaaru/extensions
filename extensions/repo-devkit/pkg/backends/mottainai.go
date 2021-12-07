@@ -178,6 +178,7 @@ func (b *BackendMottainai) GetFilesList() ([]string, error) {
 			Error(string(req.ResponseRaw))
 			return ans, err
 		}
+		return ans, err
 	}
 
 	// Drop initial slash
