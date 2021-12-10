@@ -153,15 +153,14 @@ system:
 repos_confdir:
   - $rootfs/etc/luet/repos.conf.d
 repositories:
-- name: "mocaccino-repository-index"
-  description: "MocaccinoOS Repository index"
+- name: "geaaru-repo-index"
+  description: "Geaaru Repository index"
   type: "http"
   enable: true
   cached: true
   priority: 1
   urls:
-  - "https://get.mocaccino.org/mocaccino-repository-index"
-
+    - https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
 EOF
 
   # Required to connect to remote repositories
@@ -220,14 +219,14 @@ system:
 repos_confdir:
   - /etc/luet/repos.conf.d
 repositories:
-- name: "mocaccino-repository-index"
-  description: "MocaccinoOS Repository index"
+- name: "geaaru-repo-index"
+  description: "Geaaru Repository index"
   type: "http"
   enable: true
   cached: true
   priority: 1
   urls:
-  - "https://get.mocaccino.org/mocaccino-repository-index"
+    - https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
 
 EOF
 
