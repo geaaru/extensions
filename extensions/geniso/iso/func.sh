@@ -160,7 +160,7 @@ repositories:
   cached: true
   priority: 1
   urls:
-    - https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
+    - "https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
 EOF
 
   # Required to connect to remote repositories
@@ -226,7 +226,7 @@ repositories:
   cached: true
   priority: 1
   urls:
-    - https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
+    - "https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
 
 EOF
 
