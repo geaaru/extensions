@@ -22,9 +22,10 @@ import (
 	"fmt"
 	"io/ioutil"
 
+	"github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/version"
+
 	. "github.com/mudler/luet/pkg/logger"
 	luet_pkg "github.com/mudler/luet/pkg/package"
-	luet_version "github.com/mudler/luet/pkg/versioner"
 	"gopkg.in/yaml.v2"
 )
 
@@ -58,7 +59,8 @@ func (c *LuetRDCList) ToIgnore(pkg *luet_pkg.DefaultPackage) bool {
 	ans := false
 
 	if c.HasFilters() {
-		pSelector, err := luet_version.ParseVersion(pkg.GetVersion())
+
+		pSelector, err := version.ParseVersion(pkg.GetVersion())
 		if err != nil {
 			Warning(fmt.Sprintf(
 				"Error on create package selector for package %s: %s",
@@ -72,7 +74,7 @@ func (c *LuetRDCList) ToIgnore(pkg *luet_pkg.DefaultPackage) bool {
 				continue
 			}
 
-			selector, err := luet_version.ParseVersion(f.GetVersion())
+			selector, err := version.ParseVersion(f.GetVersion())
 			if err != nil {
 				Warning(fmt.Sprintf(
 					"Error on create version selector for package %s: %s",
@@ -80,7 +82,7 @@ func (c *LuetRDCList) ToIgnore(pkg *luet_pkg.DefaultPackage) bool {
 				continue
 			}
 
-			admit, err := luet_version.PackageAdmit(selector, pSelector)
+			admit, err := version.PackageAdmit(selector, pSelector)
 			if err != nil {
 				Warning(fmt.Sprintf("Error on check package %s: %s",
 					f.HumanReadableString(), err.Error()))
