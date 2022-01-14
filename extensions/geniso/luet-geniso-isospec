@@ -32,9 +32,9 @@ create_iso_metadata_jsonfile () {
   local d=$(date +%Y%m%d)
 
   echo "{
-"date": "$d",
-"iso": "$iso",
-"sha256": "${sha256}"
+\"date\": \"$d\",
+\"iso\": \"$iso\",
+\"sha256\": \"${sha256}\"
 }" > $f
 
   return 0
