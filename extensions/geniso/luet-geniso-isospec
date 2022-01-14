@@ -11,7 +11,8 @@ fi
 create_iso_metadata_file () {
   local iso=$1
   local sha256=$2
-  local f=$3
+  local size=$3
+  local f=$4
 
   local d=$(date +%Y%m%d)
 
@@ -19,6 +20,7 @@ create_iso_metadata_file () {
 date: $d
 iso: $iso
 sha256: ${sha256}
+size: \"${size}\"
 " > $f
 
   return 0
@@ -27,14 +29,16 @@ sha256: ${sha256}
 create_iso_metadata_jsonfile () {
   local iso=$1
   local sha256=$2
-  local f=$3
+  local size=$3
+  local f=$4
 
   local d=$(date +%Y%m%d)
 
   echo "{
 \"date\": \"$d\",
 \"iso\": \"$iso\",
-\"sha256\": \"${sha256}\"
+\"sha256\": \"${sha256}\",
+\"size\": \"${size}\"
 }" > $f
 
   return 0
@@ -90,8 +94,10 @@ echo "Image name: $IMAGE_NAME"
 luet geniso
 
 IMAGE_SHA256=`sha256sum $IMAGE_NAME | awk '{ print $1 }'`
+IMAGE_SIZE=$(($(stat --print="%s" $IMAGE_NAME)/1024/1024))
+IMAGE_SIZE=$(perl -E "say ${IMAGE_SIZE}/1000.0 .' GB'")
 
-create_iso_metadata_file "$IMAGE_NAME" "$IMAGE_SHA256" "iso-meta.yaml"
-create_iso_metadata_jsonfile "$IMAGE_NAME" "$IMAGE_SHA256" "iso-meta.json"
+create_iso_metadata_file "$IMAGE_NAME" "$IMAGE_SHA256" "$IMAGE_SIZE" "iso-meta.yaml"
+create_iso_metadata_jsonfile "$IMAGE_NAME" "$IMAGE_SHA256" "$IMAGE_SIZE" "iso-meta.json"
 
 echo $IMAGE_SHA256 > $IMAGE_NAME.sha256
