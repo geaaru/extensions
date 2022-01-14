@@ -89,7 +89,7 @@ echo "Image name: $IMAGE_NAME"
 
 luet geniso
 
-IMAGE_SHA256=`sha256sum $IMAGE_NAME`
+IMAGE_SHA256=`sha256sum $IMAGE_NAME | awk '{ print $1 }'`
 
 create_iso_metadata_file "$IMAGE_NAME" "$IMAGE_SHA256" "iso-meta.yaml"
 create_iso_metadata_jsonfile "$IMAGE_NAME" "$IMAGE_SHA256" "iso-meta.json"
