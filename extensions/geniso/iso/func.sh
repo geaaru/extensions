@@ -181,7 +181,7 @@ EOF
 
   echo "Installing packages ${packages} in $rootfs, logs available at ${LUET_GENISO_OUTPUT}"
   ${SUDO} luet install --config $rootfs/luet.yaml ${LUET_OPTS} ${packages} >> ${LUET_GENISO_OUTPUT} 2>&1
-  ${SUDO} luet cleanup --config $rootfs/luet.yaml
+  ${SUDO} luet cleanup --config $rootfs/luet.yaml --purge-repos
 
   if [[ "$keep_db" != "true" ]]; then
     rm -rf "$rootfs/var/luet/"
@@ -256,7 +256,8 @@ EOF
 
   echo "Installing packages ${packages} in $rootfs, logs available at ${LUET_GENISO_OUTPUT}"
   ${SUDO} chroot . /luet install --config /luet.yaml ${LUET_OPTS} ${packages} >> ${LUET_GENISO_OUTPUT} 2>&1
-  ${SUDO} chroot . /luet cleanup --config /luet.yaml
+  # For uefi image macaroni-funtoo repository metadata take 140MB. We need purge it.
+  ${SUDO} chroot . /luet cleanup --config /luet.yaml --purge-repos
 
   if [[ "$keep_db" != "true" ]]; then
     rm -rf "$rootfs/var/luet/"
