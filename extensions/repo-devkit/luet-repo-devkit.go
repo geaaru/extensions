@@ -61,8 +61,8 @@ func Execute() {
 	var rootCmd = &cobra.Command{
 		Use:   "luet-repo-devkit --",
 		Short: cliName,
-		Version: fmt.Sprintf("%s-g%s %s",
-			devkit.Version, devkit.BuildCommit, devkit.BuildTime,
+		Version: fmt.Sprintf("%s-g%s %s - %s",
+			devkit.Version, devkit.BuildCommit, devkit.BuildTime, devkit.BuildGoVersion,
 		),
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			err := initConfig()

@@ -19,10 +19,11 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package devkit
 
 const (
-	Version = "0.1.0"
+	Version = "0.2.0"
 )
 
 var (
-	BuildTime   string
-	BuildCommit string
+	BuildTime      string
+	BuildCommit    string
+	BuildGoVersion string
 )
