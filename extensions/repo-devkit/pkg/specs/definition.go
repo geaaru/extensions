@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -18,7 +18,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 package specs
 
 import (
-	artifact "github.com/mudler/luet/pkg/compiler/types/artifact"
+	artifact "github.com/geaaru/luet/pkg/compiler/types/artifact"
 )
 
 type LuetRDConfig struct {

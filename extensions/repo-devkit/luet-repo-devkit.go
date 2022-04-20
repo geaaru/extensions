@@ -23,11 +23,11 @@ import (
 	"os"
 	"strings"
 
-	devkitcmd "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/cmd"
-	"github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/devkit"
+	devkitcmd "github.com/geaaru/extensions/extensions/repo-devkit/pkg/cmd"
+	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/devkit"
 
-	. "github.com/mudler/luet/pkg/config"
-	. "github.com/mudler/luet/pkg/logger"
+	. "github.com/geaaru/luet/pkg/config"
+	. "github.com/geaaru/luet/pkg/logger"
 	"github.com/spf13/cobra"
 )
 

@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -21,9 +21,9 @@ package devkit
 import (
 	"fmt"
 
-	specs "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
+	specs "github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
-	. "github.com/mudler/luet/pkg/logger"
+	. "github.com/geaaru/luet/pkg/logger"
 )
 
 type RepoCleaner struct {

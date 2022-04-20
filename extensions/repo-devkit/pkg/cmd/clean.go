@@ -22,8 +22,8 @@ import (
 	"fmt"
 	"os"
 
-	devkit "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/devkit"
-	specs "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
+	devkit "github.com/geaaru/extensions/extensions/repo-devkit/pkg/devkit"
+	specs "github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
 	cobra "github.com/spf13/cobra"
 )

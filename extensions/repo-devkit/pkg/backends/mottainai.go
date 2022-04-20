@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,7 +25,7 @@ import (
 	"path"
 	"strings"
 
-	"github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
+	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
 	common "github.com/MottainaiCI/mottainai-server/mottainai-cli/common"
 	client "github.com/MottainaiCI/mottainai-server/pkg/client"
@@ -33,8 +33,8 @@ import (
 	utils "github.com/MottainaiCI/mottainai-server/pkg/utils"
 	schema "github.com/MottainaiCI/mottainai-server/routes/schema"
 	v1 "github.com/MottainaiCI/mottainai-server/routes/schema/v1"
-	artifact "github.com/mudler/luet/pkg/compiler/types/artifact"
-	. "github.com/mudler/luet/pkg/logger"
+	artifact "github.com/geaaru/luet/pkg/compiler/types/artifact"
+	. "github.com/geaaru/luet/pkg/logger"
 )
 
 type BackendMottainai struct {

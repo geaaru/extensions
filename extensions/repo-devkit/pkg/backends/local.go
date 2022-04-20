@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -24,9 +24,9 @@ import (
 	"os"
 	"path/filepath"
 
-	"github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
-	artifact "github.com/mudler/luet/pkg/compiler/types/artifact"
-	. "github.com/mudler/luet/pkg/logger"
+	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
+	artifact "github.com/geaaru/luet/pkg/compiler/types/artifact"
+	. "github.com/geaaru/luet/pkg/logger"
 )
 
 type BackendLocal struct {

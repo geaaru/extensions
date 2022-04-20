@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -25,11 +25,11 @@ import (
 	"regexp"
 	"sort"
 
-	devkit "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/devkit"
-	specs "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
+	devkit "github.com/geaaru/extensions/extensions/repo-devkit/pkg/devkit"
+	specs "github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
-	luet_pkg "github.com/mudler/luet/pkg/package"
-	luet_spectooling "github.com/mudler/luet/pkg/spectooling"
+	luet_pkg "github.com/geaaru/luet/pkg/package"
+	luet_spectooling "github.com/geaaru/luet/pkg/spectooling"
 	cobra "github.com/spf13/cobra"
 )
 

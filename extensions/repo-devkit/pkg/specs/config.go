@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,10 +22,10 @@ import (
 	"fmt"
 	"io/ioutil"
 
-	"github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/version"
+	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/version"
 
-	. "github.com/mudler/luet/pkg/logger"
-	luet_pkg "github.com/mudler/luet/pkg/package"
+	. "github.com/geaaru/luet/pkg/logger"
+	luet_pkg "github.com/geaaru/luet/pkg/package"
 	"gopkg.in/yaml.v2"
 )
 

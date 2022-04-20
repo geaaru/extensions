@@ -1,5 +1,5 @@
 /*
-Copyright (C) 2020-2021  Daniele Rondina <geaaru@sabayonlinux.org>
+Copyright (C) 2020-2022  Daniele Rondina <geaaru@funtoo.org>
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU General Public License as published by
@@ -22,13 +22,13 @@ import (
 	"errors"
 	"fmt"
 
-	specs "github.com/Luet-lab/extensions/extensions/repo-devkit/pkg/specs"
+	specs "github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
-	"github.com/Luet-lab/luet-portage-converter/pkg/converter"
-	. "github.com/mudler/luet/pkg/config"
-	. "github.com/mudler/luet/pkg/logger"
-	luet_pkg "github.com/mudler/luet/pkg/package"
-	luet_tree "github.com/mudler/luet/pkg/tree"
+	"github.com/geaaru/luet-portage-converter/pkg/converter"
+	. "github.com/geaaru/luet/pkg/config"
+	. "github.com/geaaru/luet/pkg/logger"
+	luet_pkg "github.com/geaaru/luet/pkg/package"
+	luet_tree "github.com/geaaru/luet/pkg/tree"
 )
 
 type RepoList struct {
