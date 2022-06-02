@@ -91,7 +91,7 @@ echo "Luet: $LUET_BIN"
 echo "Luet config: $LUET_CONFIG"
 echo "Image name: $IMAGE_NAME"
 
-luet geniso
+luet-geniso
 
 IMAGE_SHA256=`sha256sum $IMAGE_NAME | awk '{ print $1 }'`
 IMAGE_SIZE=$(($(stat --print="%s" $IMAGE_NAME)/1024/1024))
