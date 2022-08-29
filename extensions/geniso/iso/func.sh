@@ -210,26 +210,6 @@ luet_install() {
 
   cp -rf "${LUET_CONFIG}" "$rootfs/luet.yaml"
 
-  # XXX: This is temporarly needed until we fix override from CLI of --system-target
-  #      and the --system-dbpath options
-  cat <<EOF >> "$rootfs/luet.yaml"
-system:
-  rootfs: "/"
-  database_engine: "boltdb"
-repos_confdir:
-  - /etc/luet/repos.conf.d
-repositories:
-- name: "geaaru-repo-index"
-  description: "Geaaru Repository index"
-  type: "http"
-  enable: true
-  cached: true
-  priority: 1
-  urls:
-    - "https://raw.githubusercontent.com/geaaru/repo-index/gh-pages"
-
-EOF
-
   ${SUDO} mount --bind /dev $rootfs/dev/
   ${SUDO} mount --bind /sys $rootfs/sys/
   ${SUDO} mount --bind /proc $rootfs/proc/
@@ -247,7 +227,6 @@ EOF
   fi
 
   cp -rfv ${LUET_BIN} $rootfs/luet
-
 
   if [ -n "${repositories}" ]; then
     echo "Installing repositories ${repositories} in $rootfs, logs available at ${LUET_GENISO_OUTPUT}"

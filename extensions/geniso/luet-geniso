@@ -10,6 +10,10 @@ set -e
 
 . "/usr/share/luet-extension/geniso/func.sh"
 
+if [ -n "${DEBUG}" ] ; then
+  set -x
+fi
+
 export IMAGE_NAME="${IMAGE_NAME:-luet_os.iso}"
 export LUET_PACKAGES="${LUET_PACKAGES:-}"
 export LUET_REPOS="${LUET_REPOS:-}"
