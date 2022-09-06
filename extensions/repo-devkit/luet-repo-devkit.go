@@ -32,7 +32,7 @@ import (
 )
 
 const (
-	cliName = `Copyright (c) 2020-2021 - Daniele Rondina
+	cliName = `Copyright (c) 2020-2022 - Daniele Rondina
 
 Luet Repository Devkit`
 )
@@ -62,7 +62,7 @@ func Execute() {
 		Use:   "luet-repo-devkit --",
 		Short: cliName,
 		Version: fmt.Sprintf("%s-g%s %s - %s",
-			devkit.Version, devkit.BuildCommit, devkit.BuildTime, devkit.BuildGoVersion,
+			devkit.Version, BuildCommit, BuildTime, BuildGoVersion,
 		),
 		PersistentPreRun: func(cmd *cobra.Command, args []string) {
 			err := initConfig()

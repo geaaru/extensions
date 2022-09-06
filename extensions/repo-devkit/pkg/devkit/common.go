@@ -21,9 +21,3 @@ package devkit
 const (
 	Version = "0.2.0"
 )
-
-var (
-	BuildTime      string
-	BuildCommit    string
-	BuildGoVersion string
-)
