@@ -1,6 +1,9 @@
 #!/bin/bash
 
 set -e
+if [ -n "${DEBUG}" ] ; then
+  set -x
+fi
 
 DIR="${BASH_SOURCE%/*}"
 if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
@@ -9,6 +12,7 @@ if [[ ! -d "$DIR" ]]; then DIR="$PWD"; fi
 # Generate ISO image for both BIOS and UEFI based systems.
 geniso() {
   cd $ISOIMAGE
+
 
   xorriso -as mkisofs \
     -volid "$ISOLABEL" \
