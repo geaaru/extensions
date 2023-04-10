@@ -45,6 +45,7 @@ export CA_CERTIFICATES=${CA_CERTIFICATES:-/etc/ssl/certs/ca-certificates.crt}
 export LUET_GENISO_OUTPUT="${LUET_GENISO_OUTPUT:-$WORKDIR/luet_install.log}"
 export LUET_BOX_INSTALLER=${LUET_BOX_INSTALLER:-0}
 export LUET_OPTS="${LUET_OPTS:-}"
+export DNS_SERVER=${DNS_SERVER:-8.8.8.8}
 
 trap cleanup 1 2 3 6 EXIT
 

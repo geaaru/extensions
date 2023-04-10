@@ -165,7 +165,7 @@ EOF
 
   # Required to connect to remote repositories
   if [ ! -f "$rootfs/etc/resolv.conf" ]; then
-    echo "nameserver 8.8.8.8" > $rootfs/etc/resolv.conf
+    echo "nameserver ${DNS_SERVER}" > $rootfs/etc/resolv.conf
   fi
   if [ ! -f "$rootfs/etc/ssl/certs/ca-certificates.crt" ]; then
     mkdir -p $rootfs/etc/ssl/certs
