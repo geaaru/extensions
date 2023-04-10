@@ -93,11 +93,12 @@ echo "Image name: $IMAGE_NAME"
 
 luet-geniso
 
-IMAGE_SHA256=`sha256sum $IMAGE_NAME | awk '{ print $1 }'`
+IMAGE_SHA256_FULL=`sha256sum $IMAGE_NAME`
+IMAGE_SHA256=`echo ${IMAGE_SHA256_FULL} | awk '{ print $1 }'`
 IMAGE_SIZE=$(($(stat --print="%s" $IMAGE_NAME)/1024/1024))
 IMAGE_SIZE=$(perl -E "say ${IMAGE_SIZE}/1000.0 .' GB'")
 
 create_iso_metadata_file "$IMAGE_NAME" "$IMAGE_SHA256" "$IMAGE_SIZE" "iso-meta.yaml"
 create_iso_metadata_jsonfile "$IMAGE_NAME" "$IMAGE_SHA256" "$IMAGE_SIZE" "iso-meta.json"
 
-echo $IMAGE_SHA256 > $IMAGE_NAME.sha256
+echo $IMAGE_SHA256_FULL > $IMAGE_NAME.sha256
