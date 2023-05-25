@@ -32,7 +32,7 @@ import (
 )
 
 const (
-	cliName = `Copyright (c) 2020-2022 - Daniele Rondina
+	cliName = `Copyright (c) 2020-2023 - Daniele Rondina
 
 Luet Repository Devkit`
 )
