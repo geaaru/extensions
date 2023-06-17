@@ -27,10 +27,10 @@ import (
 	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/backends"
 	specs "github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
-	artifact "github.com/geaaru/luet/pkg/compiler/types/artifact"
 	. "github.com/geaaru/luet/pkg/logger"
 	luet_pkg "github.com/geaaru/luet/pkg/package"
 	luet_tree "github.com/geaaru/luet/pkg/tree"
+	artifact "github.com/geaaru/luet/pkg/v2/compiler/types/artifact"
 	tmtools "github.com/geaaru/time-master/pkg/tools"
 )
 

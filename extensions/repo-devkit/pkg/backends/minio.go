@@ -13,7 +13,6 @@ GNU General Public License for more details.
 
 You should have received a copy of the GNU General Public License
 along with this program. If not, see <http://www.gnu.org/licenses/>.
-
 */
 package backends
 
@@ -27,7 +26,7 @@ import (
 
 	"github.com/geaaru/extensions/extensions/repo-devkit/pkg/specs"
 
-	artifact "github.com/geaaru/luet/pkg/compiler/types/artifact"
+	artifact "github.com/geaaru/luet/pkg/v2/compiler/types/artifact"
 	"github.com/minio/minio-go/v7"
 	"github.com/minio/minio-go/v7/pkg/credentials"
 )
