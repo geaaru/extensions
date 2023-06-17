@@ -1,5 +1,5 @@
 #!/bin/bash
-# Author: Daniele Rondina, geaaru@sabayonlinux.org
+# Author: Daniele Rondina, geaaru@funtoo.org
 # Unpack portage packages to a specific directory
 # License: MIT
 
@@ -216,7 +216,7 @@ main () {
   parse_args () {
 
     _help () {
-      echo "Copyright (c) 2020 Luet Extensions
+      echo "Copyright (c) 2020-2023 Luet Extensions
 
 luet portage [opts]
 
