@@ -8,6 +8,13 @@ import (
 	"time"
 )
 
+const (
+	// tmpPermissionForDirectory makes the destination directory writable,
+	// so that stuff can be copied recursively even if any original directory is NOT writable.
+	// See https://github.com/otiai10/copy/pull/9 for more information.
+	tmpPermissionForDirectory = os.FileMode(0755)
+)
+
 type timespec struct {
 	Mtime time.Time
 	Atime time.Time
@@ -15,22 +22,17 @@ type timespec struct {
 }
 
 // Copy copies src to dest, doesn't matter if src is a directory or a file.
-func Copy(src, dest string, opts ...Options) error {
-	opt := assureOptions(src, dest, opts...)
+func Copy(src, dest string, opt ...Options) error {
 	info, err := os.Lstat(src)
 	if err != nil {
-		return onError(src, dest, err, opt)
+		return err
 	}
-	return switchboard(src, dest, info, opt)
+	return switchboard(src, dest, info, assure(src, dest, opt...))
 }
 
 // switchboard switches proper copy functions regarding file type, etc...
 // If there would be anything else here, add a case to this switchboard.
 func switchboard(src, dest string, info os.FileInfo, opt Options) (err error) {
-	if info.Mode()&os.ModeDevice != 0 && !opt.Specials {
-		return onError(src, dest, err, opt)
-	}
-
 	switch {
 	case info.Mode()&os.ModeSymlink != 0:
 		err = onsymlink(src, dest, opt)
@@ -42,21 +44,19 @@ func switchboard(src, dest string, info os.FileInfo, opt Options) (err error) {
 		err = fcopy(src, dest, info, opt)
 	}
 
-	return onError(src, dest, err, opt)
+	return err
 }
 
 // copyNextOrSkip decide if this src should be copied or not.
 // Because this "copy" could be called recursively,
 // "info" MUST be given here, NOT nil.
 func copyNextOrSkip(src, dest string, info os.FileInfo, opt Options) error {
-	if opt.Skip != nil {
-		skip, err := opt.Skip(info, src, dest)
-		if err != nil {
-			return err
-		}
-		if skip {
-			return nil
-		}
+	skip, err := opt.Skip(src)
+	if err != nil {
+		return err
+	}
+	if skip {
+		return nil
 	}
 	return switchboard(src, dest, info, opt)
 }
@@ -65,14 +65,6 @@ func copyNextOrSkip(src, dest string, info os.FileInfo, opt Options) error {
 // with considering existence of parent directory
 // and file permission.
 func fcopy(src, dest string, info os.FileInfo, opt Options) (err error) {
-	s, err := os.Open(src)
-	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
-		return
-	}
-	defer fclose(s, &err)
 
 	if err = os.MkdirAll(filepath.Dir(dest), os.ModePerm); err != nil {
 		return
@@ -84,20 +76,19 @@ func fcopy(src, dest string, info os.FileInfo, opt Options) (err error) {
 	}
 	defer fclose(f, &err)
 
-	chmodfunc, err := opt.PermissionControl(info, dest)
-	if err != nil {
-		return err
+	if err = os.Chmod(f.Name(), info.Mode()|opt.AddPermission); err != nil {
+		return
 	}
-	chmodfunc(&err)
+
+	s, err := os.Open(src)
+	if err != nil {
+		return
+	}
+	defer fclose(s, &err)
 
 	var buf []byte = nil
 	var w io.Writer = f
-	var r io.Reader = s
-
-	if opt.WrapReader != nil {
-		r = opt.WrapReader(s)
-	}
-
+	// var r io.Reader = s
 	if opt.CopyBufferSize != 0 {
 		buf = make([]byte, opt.CopyBufferSize)
 		// Disable using `ReadFrom` by io.CopyBuffer.
@@ -105,8 +96,7 @@ func fcopy(src, dest string, info os.FileInfo, opt Options) (err error) {
 		w = struct{ io.Writer }{f}
 		// r = struct{ io.Reader }{s}
 	}
-
-	if _, err = io.CopyBuffer(w, r, buf); err != nil {
+	if _, err = io.CopyBuffer(w, s, buf); err != nil {
 		return err
 	}
 
@@ -132,24 +122,32 @@ func fcopy(src, dest string, info os.FileInfo, opt Options) (err error) {
 // with scanning contents inside the directory
 // and pass everything to "copy" recursively.
 func dcopy(srcdir, destdir string, info os.FileInfo, opt Options) (err error) {
-	if skip, err := onDirExists(opt, srcdir, destdir); err != nil {
-		return err
-	} else if skip {
-		return nil
+
+	_, err = os.Stat(destdir)
+	if err == nil && opt.OnDirExists != nil && destdir != opt.intent.dest {
+		switch opt.OnDirExists(srcdir, destdir) {
+		case Replace:
+			if err := os.RemoveAll(destdir); err != nil {
+				return err
+			}
+		case Untouchable:
+			return nil
+		} // case "Merge" is default behaviour. Go through.
+	} else if err != nil && !os.IsNotExist(err) {
+		return err // Unwelcome error type...!
 	}
 
+	originalMode := info.Mode()
+
 	// Make dest dir with 0755 so that everything writable.
-	chmodfunc, err := opt.PermissionControl(info, destdir)
-	if err != nil {
-		return err
+	if err = os.MkdirAll(destdir, tmpPermissionForDirectory); err != nil {
+		return
 	}
-	defer chmodfunc(&err)
+	// Recover dir mode with original one.
+	defer chmod(destdir, originalMode|opt.AddPermission, &err)
 
 	contents, err := ioutil.ReadDir(srcdir)
 	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
 		return
 	}
 
@@ -177,33 +175,10 @@ func dcopy(srcdir, destdir string, info os.FileInfo, opt Options) (err error) {
 	return
 }
 
-func onDirExists(opt Options, srcdir, destdir string) (bool, error) {
-	_, err := os.Stat(destdir)
-	if err == nil && opt.OnDirExists != nil && destdir != opt.intent.dest {
-		switch opt.OnDirExists(srcdir, destdir) {
-		case Replace:
-			if err := os.RemoveAll(destdir); err != nil {
-				return false, err
-			}
-		case Untouchable:
-			return true, nil
-		} // case "Merge" is default behaviour. Go through.
-	} else if err != nil && !os.IsNotExist(err) {
-		return true, err // Unwelcome error type...!
-	}
-	return false, nil
-}
-
 func onsymlink(src, dest string, opt Options) error {
 	switch opt.OnSymlink(src) {
 	case Shallow:
-		if err := lcopy(src, dest); err != nil {
-			return err
-		}
-		if opt.PreserveTimes {
-			return preserveLtimes(src, dest)
-		}
-		return nil
+		return lcopy(src, dest)
 	case Deep:
 		orig, err := os.Readlink(src)
 		if err != nil {
@@ -226,9 +201,6 @@ func onsymlink(src, dest string, opt Options) error {
 func lcopy(src, dest string) error {
 	src, err := os.Readlink(src)
 	if err != nil {
-		if os.IsNotExist(err) {
-			return nil
-		}
 		return err
 	}
 	return os.Symlink(src, dest)
@@ -243,12 +215,29 @@ func fclose(f *os.File, reported *error) {
 	}
 }
 
-// onError lets caller to handle errors
-// occured when copying a file.
-func onError(src, dest string, err error, opt Options) error {
-	if opt.OnError == nil {
-		return err
+// chmod ANYHOW changes file mode,
+// with asiging error raised during Chmod,
+// BUT respecting the error already reported.
+func chmod(dir string, mode os.FileMode, reported *error) {
+	if err := os.Chmod(dir, mode); *reported == nil {
+		*reported = err
 	}
+}
 
-	return opt.OnError(src, dest, err)
+// assure Options struct, should be called only once.
+// All optional values MUST NOT BE nil/zero after assured.
+func assure(src, dest string, opts ...Options) Options {
+	defopt := getDefaultOptions(src, dest)
+	if len(opts) == 0 {
+		return defopt
+	}
+	if opts[0].OnSymlink == nil {
+		opts[0].OnSymlink = defopt.OnSymlink
+	}
+	if opts[0].Skip == nil {
+		opts[0].Skip = defopt.Skip
+	}
+	opts[0].intent.src = defopt.intent.src
+	opts[0].intent.dest = defopt.intent.dest
+	return opts[0]
 }

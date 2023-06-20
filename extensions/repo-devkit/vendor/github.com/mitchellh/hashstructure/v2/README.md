@@ -65,7 +65,7 @@ v := ComplexStruct{
     },
 }
 
-hash, err := hashstructure.Hash(v, hashstructure.FormatV2, nil)
+hash, err := hashstructure.Hash(v, nil)
 if err != nil {
     panic(err)
 }

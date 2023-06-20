@@ -1,4 +1,3 @@
-//go:build linux
 // +build linux
 
 package mtree
@@ -70,11 +69,11 @@ var (
 	}
 	xattrKeywordFunc = func(path string, info os.FileInfo, r io.Reader) ([]KeyVal, error) {
 		if hdr, ok := info.Sys().(*tar.Header); ok {
-			if len(hdr.PAXRecords) == 0 {
+			if len(hdr.Xattrs) == 0 {
 				return nil, nil
 			}
 			klist := []KeyVal{}
-			for k, v := range hdr.PAXRecords {
+			for k, v := range hdr.Xattrs {
 				encKey, err := govis.Vis(k, DefaultVisFlags)
 				if err != nil {
 					return nil, nil

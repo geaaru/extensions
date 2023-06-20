@@ -3,6 +3,4 @@
 .lint
 .test
 .vet
-.staticcheck
-.gocyclo
 gomtree

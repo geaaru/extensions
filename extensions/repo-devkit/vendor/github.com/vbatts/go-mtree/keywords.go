@@ -18,7 +18,7 @@ type Keyword string
 
 // Prefix is the portion of the keyword before a first "." (if present).
 //
-// Primarily for the xattr use-case, where the keyword `xattr.security.selinux` would have a Suffix of `security.selinux`.
+// Primarly for the xattr use-case, where the keyword `xattr.security.selinux` would have a Suffix of `security.selinux`.
 func (k Keyword) Prefix() Keyword {
 	if strings.Contains(string(k), ".") {
 		return Keyword(strings.SplitN(string(k), ".", 2)[0])
@@ -29,7 +29,7 @@ func (k Keyword) Prefix() Keyword {
 // Suffix is the portion of the keyword after a first ".".
 // This is an option feature.
 //
-// Primarily for the xattr use-case, where the keyword `xattr.security.selinux` would have a Suffix of `security.selinux`.
+// Primarly for the xattr use-case, where the keyword `xattr.security.selinux` would have a Suffix of `security.selinux`.
 func (k Keyword) Suffix() string {
 	if strings.Contains(string(k), ".") {
 		return strings.SplitN(string(k), ".", 2)[1]
@@ -174,7 +174,9 @@ func keyValDifference(this, that []KeyVal) []KeyVal {
 }
 func keyValCopy(set []KeyVal) []KeyVal {
 	ret := make([]KeyVal, len(set))
-	copy(ret, set)
+	for i := range set {
+		ret[i] = set[i]
+	}
 	return ret
 }
 

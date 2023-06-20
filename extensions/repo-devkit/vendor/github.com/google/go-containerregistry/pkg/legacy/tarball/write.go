@@ -313,7 +313,10 @@ func MultiWrite(refToImage map[name.Reference]v1.Image, w io.Writer) error {
 	if err != nil {
 		return err
 	}
-	return writeTarEntry(tf, "repositories", bytes.NewReader(reposBytes), int64(len(reposBytes)))
+	if err := writeTarEntry(tf, "repositories", bytes.NewReader(reposBytes), int64(len(reposBytes))); err != nil {
+		return err
+	}
+	return nil
 }
 
 func dedupRefToImage(refToImage map[name.Reference]v1.Image) ([]v1.Image, map[v1.Image][]string) {

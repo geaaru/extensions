@@ -154,7 +154,7 @@ func unmapHeader(hdr *tar.Header, mapOptions MapOptions) error {
 
 		// Don't add the xattr if the owner isn't just (0, 0) because that's a
 		// waste of space.
-		if !rootlesscontainers.IsDefault(&payload) {
+		if !rootlesscontainers.IsDefault(payload) {
 			valueBytes, err := proto.Marshal(&payload)
 			if err != nil {
 				return errors.Wrap(err, "marshal rootlesscontainers payload")

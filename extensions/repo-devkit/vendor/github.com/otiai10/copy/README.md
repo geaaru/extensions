@@ -16,17 +16,7 @@
 # Example Usage
 
 ```go
-package main
-
-import (
-	"fmt"
-	cp "github.com/otiai10/copy"
-)
-
-func main() {
-	err := cp.Copy("your/src", "your/dest")
-	fmt.Println(err) // nil
-}
+err := Copy("your/directory", "your/directory.copy")
 ```
 
 # Advanced Usage
@@ -41,24 +31,12 @@ type Options struct {
 	// OnDirExists can specify what to do when there is a directory already existing in destination.
 	OnDirExists func(src, dest string) DirExistsAction
 
-	// OnError can let users decide how to handle errors (e.g., you can suppress specific error).
-	OnError func(src, dest, string, err error) error
-
 	// Skip can specify which files should be skipped
-	Skip func(srcinfo os.FileInfo, src, dest string) (bool, error)
+	Skip func(src string) (bool, error)
 
-	// PermissionControl can control permission of
-	// every entry.
-	// When you want to add permission 0222, do like
-	//
-	//		PermissionControl = AddPermission(0222)
-	//
-	// or if you even don't want to touch permission,
-	//
-	//		PermissionControl = DoNothing
-	//
-	// By default, PermissionControl = PreservePermission
-	PermissionControl PermissionControlFunc
+	// AddPermission to every entry,
+	// NO MORE THAN 0777
+	AddPermission os.FileMode
 
 	// Sync file after copy.
 	// Useful in case when file must be on the disk
@@ -83,7 +61,7 @@ type Options struct {
 ```go
 // For example...
 opt := Options{
-	Skip: func(info os.FileInfo, src, dest string) (bool, error) {
+	Skip: func(src string) (bool, error) {
 		return strings.HasSuffix(src, ".git"), nil
 	},
 }

@@ -33,11 +33,6 @@ func Walk(root string, excludes []ExcludeFunc, keywords []Keyword, fsEval FsEval
 	if fsEval == nil {
 		fsEval = DefaultFsEval{}
 	}
-	if info, err := os.Stat(root); err == nil {
-		if !info.IsDir() {
-			return nil, fmt.Errorf("%s: Not a directory", filepath.Base(root))
-		}
-	}
 	creator := dhCreator{DH: &DirectoryHierarchy{}, fs: fsEval}
 	// insert signature and metadata comments first (user, machine, tree, date)
 	for _, e := range signatureEntries(root) {
@@ -108,7 +103,7 @@ func Walk(root string, excludes []ExcludeFunc, keywords []Keyword, fsEval FsEval
 						}
 						keyFunc, ok := KeywordFuncs[keyword.Prefix()]
 						if !ok {
-							return fmt.Errorf("unknown keyword %q for file %q", keyword.Prefix(), path)
+							return fmt.Errorf("Unknown keyword %q for file %q", keyword.Prefix(), path)
 						}
 						kvs, err := creator.fs.KeywordFunc(keyFunc)(path, info, r)
 						if err != nil {
@@ -143,7 +138,7 @@ func Walk(root string, excludes []ExcludeFunc, keywords []Keyword, fsEval FsEval
 						}
 						keyFunc, ok := KeywordFuncs[keyword.Prefix()]
 						if !ok {
-							return fmt.Errorf("unknown keyword %q for file %q", keyword.Prefix(), path)
+							return fmt.Errorf("Unknown keyword %q for file %q", keyword.Prefix(), path)
 						}
 						kvs, err := creator.fs.KeywordFunc(keyFunc)(path, info, r)
 						if err != nil {
@@ -203,7 +198,7 @@ func Walk(root string, excludes []ExcludeFunc, keywords []Keyword, fsEval FsEval
 				}
 				keyFunc, ok := KeywordFuncs[keyword.Prefix()]
 				if !ok {
-					return fmt.Errorf("unknown keyword %q for file %q", keyword.Prefix(), path)
+					return fmt.Errorf("Unknown keyword %q for file %q", keyword.Prefix(), path)
 				}
 				kvs, err := creator.fs.KeywordFunc(keyFunc)(path, info, r)
 				if err != nil {
